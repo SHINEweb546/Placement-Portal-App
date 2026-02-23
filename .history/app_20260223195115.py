@@ -2,15 +2,13 @@ from flask import Flask
 from Backend.model import db
 def setup():
     app= Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    app.config["SQLALCHEMY_DATABASE_URI"]
     db.init_app(app)
     
     print("App has been started")
     return app
 
-app = setup()
+app=setup()
 
 
 
