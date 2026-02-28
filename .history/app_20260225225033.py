@@ -35,4 +35,10 @@ if __name__=="__main__":
             print("Admin is already there")
         app.run(debug=True)
 
+@app.route("/admin")
+def admin():
+    return "Hii Admin !"
 
+@app.route("/user")
+def user():
+    return "Hii User !"

@@ -9,9 +9,8 @@ def setup():
     
     print("App has been started")
     return app
-
-app = setup()
 from Backend.routes import *
+app = setup()
 
 
 
@@ -31,8 +30,7 @@ if __name__=="__main__":
             db.session.add(admin)
             db.session.commit()
             print("Admin created !!")
-        else:
-            print("Admin is already there")
+        print("Admin is already there")
         app.run(debug=True)
 
-
+    
