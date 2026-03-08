@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="container mt-4">
+
+<h2>Admin Dashboard</h2>
+<h3>Company Approvals</h3>
+
+<table border="1">
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for company in companies %}
+<tr>
+    <td>{{ company.name }}</td>
+    <td>{{ company.email }}</td>
+
+    <td>
+        {% if company.is_approved %}
+            Approved
+        {% else %}
+            Pending
+        {% endif %}
+    </td>
+
+    <td>
+        {% if not company.is_approved %}
+            <a href="/approve_company/{{ company.id }}">Approve</a>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+<hr>
+
+<h4>Users</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Approved</th>
+    <th>Action</th>
+  </tr>
+
+  {% for user in users %}
+  <tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.is_approved }}</td>
+    <td>
+      <a href="/admin/approve/{{ user.id }}" class="btn btn-success btn-sm">Approve</a>
+      <a href="/admin/delete/{{ user.id }}" class="btn btn-danger btn-sm">Delete</a>
+      <a href="{{ url_for('make_company') }}" class="btn btn-success">Create a Company</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr>
+
+<h4>Jobs</h4>
+<a href="/admin/job/add" class="btn btn-primary mb-2">Add Job</a>
+
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+
+  {% for job in jobs %}
+  <tr>
+    <td>{{ job.id }}</td>
+    <td>{{ job.title }}</td>
+    <td>{{ job.status }}</td>
+    <td>
+      <a href="/admin/job/edit/{{ job.id }}" class="btn btn-warning btn-sm">Edit</a>
+      <a href="/admin/job/delete/{{ job.id }}" class="btn btn-danger btn-sm">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
-from flask import Flask,render_template,redirect,url_for,request,session
+from flask import Flask,render_template,redirect,url_for,request
 from .model import *
 from app import app
-
 
 @app.route("/")
 def home():
@@ -225,39 +224,3 @@ def reject_application(id):
     db.session.commit()
 
     return redirect(url_for("admin_applications"))
-@app.route("/create_drive", methods=["GET","POST"])
-def create_drive():
-
-    if request.method == "POST":
-
-        title = request.form.get("title")
-        company = request.form.get("company")
-        date = request.form.get("date")
-        description = request.form.get("description")
-
-        drive = PlacementDrive(
-            title=title,
-            company_name=company,
-            date=date,
-            description=description
-        )
-
-        db.session.add(drive)
-        db.session.commit()
-
-        return redirect(url_for("admin_dashboard"))
-
-    return render_template("admin/create_drive.html")
-@app.route("/placement_drives")
-def placement_drives():
-
-    drives = PlacementDrive.query.all()
-
-    return render_template(
-        "student/placement_drives.html",
-        drives=drives
-    )
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))

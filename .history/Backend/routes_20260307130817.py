@@ -1,7 +1,6 @@
-from flask import Flask,render_template,redirect,url_for,request,session
+from flask import Flask,render_template,redirect,url_for,request
 from .model import *
 from app import app
-
 
 @app.route("/")
 def home():
@@ -94,7 +93,7 @@ def delete_job(job_id):
     db.session.delete(job)
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
-@app.route("/student_dashboard")
+@app.route("/student")
 def student_dashboard():
     
     jobs_list=Job.query.all()
@@ -102,11 +101,11 @@ def student_dashboard():
 
 
     
-@app.route("/student/student_job")
+@app.route("/student/jobs")
 def view_jobs():
     jobs = Job.query.filter_by(status="open").all()
     return render_template("student/student_job.html", jobs=jobs)
-@app.route("/student/apply/<int:job_id>")
+@app.route("/user/apply/<int:job_id>")
 def apply_job(job_id):
     application = Application(
         student_id=1,   # TEMP (will be session-based later)
@@ -119,7 +118,7 @@ def apply_job(job_id):
     return redirect(url_for("student_dashboard"))
 
     
-@app.route("/student/student_applications")
+@app.route("/student/applications")
 def my_applications():
     applications = Application.query.filter_by(student_id=1).all()
     return render_template(
@@ -151,7 +150,7 @@ def make_company():
 @app.route("/company_dashboard")
 def company_dashboard():
     jobs_list=Job.query.all()
-    return render_template("company/company_dashboard.html",jobs_list=jobs_list)
+    return render_template("company/company_daashboard.html",jobs_list=jobs_list)
 
 @app.route("/approve_company/<int:id>")
 def approve_company(id):
@@ -163,13 +162,19 @@ def approve_company(id):
     return redirect(url_for("admin_dashboard"))
 @app.route("/company/add_job_company", methods=["GET","POST"])
 def add_job_company():
-    if request.method== "POST":
+    if request.method == "POST":
         title = request.form.get("title")
         description = request.form.get("description")
-        new_job = Job(title=title, description=description,status="open",company_id=1)
+        new_job = Job(
+            title=title,
+            description=description,
+            status="open",
+            company_id=1
+        )
         db.session.add(new_job)
         db.session.commit()
-        return redirect(url_for("company_dashboard"))
+
+        return redirect(url_for("company_daashboard"))
 
     return render_template("company/add_job.html")
 @app.route("/edit_job_company/<int:id>", methods=["GET","POST"])
@@ -184,7 +189,7 @@ def edit_job_company(id):
 
         db.session.commit()
 
-        return redirect(url_for("company_dashboard"))
+        return redirect(url_for("company_daashboard"))
 
     return render_template("company/edit_job.html", job=job)
 @app.route("/delete_job_company/<int:id>")
@@ -195,69 +200,4 @@ def delete_job_company(id):
     db.session.delete(job)
     db.session.commit()
 
-    return redirect(url_for("company_dashboard"))
-@app.route("/admin/applications")
-def admin_applications():
-
-    applications = Application.query.all()
-
-    return render_template(
-        "admin/admin_applications.html",
-        applications=applications
-    )
-@app.route("/approve_application/<int:id>")
-def approve_application(id):
-
-    application = Application.query.get(id)
-
-    application.status = "Approved"
-
-    db.session.commit()
-
-    return redirect(url_for("admin_applications"))
-@app.route("/reject_application/<int:id>")
-def reject_application(id):
-
-    application = Application.query.get(id)
-
-    application.status = "Rejected"
-
-    db.session.commit()
-
-    return redirect(url_for("admin_applications"))
-@app.route("/create_drive", methods=["GET","POST"])
-def create_drive():
-
-    if request.method == "POST":
-
-        title = request.form.get("title")
-        company = request.form.get("company")
-        date = request.form.get("date")
-        description = request.form.get("description")
-
-        drive = PlacementDrive(
-            title=title,
-            company_name=company,
-            date=date,
-            description=description
-        )
-
-        db.session.add(drive)
-        db.session.commit()
-
-        return redirect(url_for("admin_dashboard"))
-
-    return render_template("admin/create_drive.html")
-@app.route("/placement_drives")
-def placement_drives():
-
-    drives = PlacementDrive.query.all()
-
-    return render_template(
-        "student/placement_drives.html",
-        drives=drives
-    )
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
+    return redirect(url_for("company_daashboard"))

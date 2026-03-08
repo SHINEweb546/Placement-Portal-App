@@ -1,0 +1,28 @@
+<h1>Placement Drives</h1>
+
+<table border="1">
+
+<tr>
+<th>Title</th>
+<th>Company</th>
+<th>Date</th>
+<th>Description</th>
+</tr>
+
+{% for drive in drives %}
+
+<tr>
+
+<td>{{ drive.title }}</td>
+
+<td>{{ drive.company_name }}</td>
+
+<td>{{ drive.date }}</td>
+
+<td>{{ drive.description }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>

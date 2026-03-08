@@ -1,7 +1,6 @@
-from flask import Flask,render_template,redirect,url_for,request,session
+from flask import Flask,render_template,redirect,url_for,request
 from .model import *
 from app import app
-
 
 @app.route("/")
 def home():
@@ -257,7 +256,3 @@ def placement_drives():
         "student/placement_drives.html",
         drives=drives
     )
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))

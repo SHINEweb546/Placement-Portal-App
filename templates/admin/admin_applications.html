@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Applications</title>
+</head>
+<body>
+    <table class="table">
+
+  <thead> Student Applications
+    <tr>
+      <th scope="col">Student</th>
+      <th scope="col">Job</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    {% for app in applications %}
+
+<tr>
+
+<td>{{ app.student.name }}</td>
+
+<td>{{ app.job.title }}</td>
+
+<td>{{ app.status }}</td>
+
+<td>
+
+<a href="{{ url_for('approve_application', id=app.id) }}">
+<button>Approve</button>
+</a>
+
+<a href="{{ url_for('reject_application', id=app.id) }}">
+<button>Reject</button>
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+
+
+</table>
+    
+</body>
+</html>

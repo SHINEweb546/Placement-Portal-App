@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Applications</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h3>My Applications</h3>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Job ID</th>
+    <th>Status</th>
+  </tr>
+
+  {% for app in applications %}
+  <tr>
+    <td>{{ app.job_id }}</td>
+    <td>{{ app.status }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="/student_dashboard" class="btn btn-secondary">Back</a>
+
+</body>
+</html>

@@ -34,14 +34,3 @@ class Application(db.Model):
 
     student = db.relationship('User', foreign_keys=[student_id])
     job = db.relationship('Job')
-class PlacementDrive(db.Model):
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    title = db.Column(db.String(100))
-
-    company_name = db.Column(db.String(100))
-
-    date = db.Column(db.String(50))
-
-    description = db.Column(db.Text)

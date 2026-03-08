@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Available Jobs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h3>Available Jobs</h3>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Action</th>
+  </tr>
+
+  {% for job in jobs %}
+  <tr>
+    <td>{{ job.title }}</td>
+    <td>{{ job.description }}</td>
+    <td>
+      <a href="/student/apply/{{ job.id }}" class="btn btn-success btn-sm">
+        Apply
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="/student_dashboard" class="btn btn-secondary">Back</a>
+
+</body>
+</html>

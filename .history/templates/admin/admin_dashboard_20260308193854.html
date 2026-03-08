@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="container mt-4">
+
+<h2>Admin Dashboard</h2>
+
+<hr>
+
+<!-- ADMIN ACTION BUTTONS -->
+
+<a href="{{ url_for('make_company') }}" class="btn btn-success mb-2">
+Create Company
+</a>
+
+<a href="{{ url_for('admin_applications') }}" class="btn btn-primary mb-2">
+View Applications
+</a>
+
+<a href="{{ url_for('create_drive') }}" class="btn btn-info mb-2">
+Create Placement Drive
+</a>
+
+<hr>
+
+<h4>Users</h4>
+
+<table class="table table-bordered">
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Approved</th>
+<th>Action</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+
+<td>{{ user.id }}</td>
+
+<td>{{ user.name }}</td>
+
+<td>{{ user.email }}</td>
+
+<td>{{ user.is_approved }}</td>
+
+<td>
+
+<a href="/admin/approve/{{ user.id }}" class="btn btn-success btn-sm">
+Approve
+</a>
+
+<a href="/admin/delete/{{ user.id }}" class="btn btn-danger btn-sm">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<hr>
+
+<h4>Jobs</h4>
+
+<a href="/admin/job/add" class="btn btn-primary mb-2">
+Add Job
+</a>
+
+<table class="table table-bordered">
+
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for job in jobs %}
+
+<tr>
+
+<td>{{ job.id }}</td>
+
+<td>{{ job.title }}</td>
+
+<td>{{ job.status }}</td>
+
+<td>
+
+<a href="/admin/job/edit/{{ job.id }}" class="btn btn-warning btn-sm">
+Edit
+</a>
+
+<a href="/admin/job/delete/{{ job.id }}" class="btn btn-danger btn-sm">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

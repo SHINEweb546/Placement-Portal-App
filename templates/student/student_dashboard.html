@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h2>Student Dashboard</h2>
+<a href="{{ url_for('logout') }}" class="btn btn-danger float-end">
+Logout
+</a>
+<h2>Available Jobs</h2>
+
+<table class="table">
+<tr>
+<th>Title</th>
+<th>Description</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for job in jobs_list %}
+<tr>
+<td>{{ job.title }}</td>
+<td>{{ job.description }}</td>
+<td>{{ job.status }}</td>
+<td>
+    <a href="{{ url_for('apply_job', job_id=job.id) }}" class="btn btn-success">
+        Apply Job
+    </a>
+</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<a href="/student/student_job" class="btn btn-primary mt-3">View Jobs</a>
+<a href="/student/student_applications" class="btn btn-secondary mt-3">My Applications</a>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
-from flask import Flask,render_template,redirect,url_for,request,session
+from flask import Flask,render_template,redirect,url_for,request
 from .model import *
 from app import app
-
 
 @app.route("/")
 def home():
@@ -119,7 +118,7 @@ def apply_job(job_id):
     return redirect(url_for("student_dashboard"))
 
     
-@app.route("/student/student_applications")
+@app.route("/student/applications")
 def my_applications():
     applications = Application.query.filter_by(student_id=1).all()
     return render_template(
@@ -196,68 +195,3 @@ def delete_job_company(id):
     db.session.commit()
 
     return redirect(url_for("company_dashboard"))
-@app.route("/admin/applications")
-def admin_applications():
-
-    applications = Application.query.all()
-
-    return render_template(
-        "admin/admin_applications.html",
-        applications=applications
-    )
-@app.route("/approve_application/<int:id>")
-def approve_application(id):
-
-    application = Application.query.get(id)
-
-    application.status = "Approved"
-
-    db.session.commit()
-
-    return redirect(url_for("admin_applications"))
-@app.route("/reject_application/<int:id>")
-def reject_application(id):
-
-    application = Application.query.get(id)
-
-    application.status = "Rejected"
-
-    db.session.commit()
-
-    return redirect(url_for("admin_applications"))
-@app.route("/create_drive", methods=["GET","POST"])
-def create_drive():
-
-    if request.method == "POST":
-
-        title = request.form.get("title")
-        company = request.form.get("company")
-        date = request.form.get("date")
-        description = request.form.get("description")
-
-        drive = PlacementDrive(
-            title=title,
-            company_name=company,
-            date=date,
-            description=description
-        )
-
-        db.session.add(drive)
-        db.session.commit()
-
-        return redirect(url_for("admin_dashboard"))
-
-    return render_template("admin/create_drive.html")
-@app.route("/placement_drives")
-def placement_drives():
-
-    drives = PlacementDrive.query.all()
-
-    return render_template(
-        "student/placement_drives.html",
-        drives=drives
-    )
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
