@@ -1,6 +1,6 @@
 from flask import Flask
 from Backend.model import db
-
+from Backend.routes import *
 def create_applications():
     app= Flask(__name__)
     app.secret_key="placementportal345"
@@ -9,11 +9,11 @@ def create_applications():
 
     db.init_app(app)
     
-    print("Placement Portal is started !!")
+    print("App has been started")
     return app
 
 app = create_applications()
-from Backend.routes import *
+
 
 
 

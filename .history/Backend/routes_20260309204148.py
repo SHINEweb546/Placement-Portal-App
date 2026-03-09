@@ -1,38 +1,30 @@
 from flask import Flask,render_template,redirect,url_for,request,session
-from .model import db,User,Job,Application,PlacementDrive
+from .model import *
 from app import app
 
 
 @app.route("/")
 def home():
     return render_template("home.html")
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login" , methods=["GET","POST"])
 def login():
-
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-
-        user = User.query.filter_by(email=email, password=password).first()
-
-        if not user:
-            return render_template("login.html", msg="Invalid email or password")
-
-        session["user_id"] = user.id
-
-        if user.role == "admin":
+        email=request.form.get("email")
+        password=request.form.get("password")
+        user=User.query.filter_by(email = email,password = password).first()
+        if user and user.role=="admin":
+            session["user_id"]=user.id
             return redirect(url_for("admin_dashboard"))
-
-        elif user.role == "student":
+        elif user and user.role=="student" :
+            session["user_id"]=user.id
             return redirect(url_for("student_dashboard"))
-
-        elif user.role == "company":
+        elif user and user.role=="company" :
+            session["user_id"]=user.id
             if user.is_approved:
                 return redirect(url_for("company_dashboard"))
             else:
                 return render_template("login.html", msg="Company not approved by admin yet")
-
-    return render_template("login.html")  
+    return render_template("login.html" , msg="Invalid details")   
 @app.route("/register", methods=["GET","POST"])
 def register():
     if request.method == "POST":
@@ -41,8 +33,8 @@ def register():
         password=request.form.get("password")
         
         
-        existing_user=User.query.filter_by(name=name, email = email,password = password).first()
-        if existing_user:
+        user=User.query.filter_by(name=name, email = email,password = password).first()
+        if user:
             return render_template("register.html",msg="User is already registered !")
         new_user=User(name=name,email = email,password = password, role="student")
         db.session.add(new_user)
@@ -80,7 +72,7 @@ def add_job():
             title=title,
             description=description,
             status="open",
-            company_id=session.get("user_id")  
+            company_id=1  # TEMP admin/company id
         )
 
         db.session.add(job)
@@ -120,24 +112,20 @@ def view_jobs():
 @app.route("/student/apply/<int:job_id>")
 def apply_job(job_id):
     student_id=session.get("user_id")
-    existing= Application.query.filter_by(
+    application = Application(
         student_id=student_id,   
         job_id=job_id,
         status="applied"
     )
-    if existing:
-        return redirect(url_for("student_dashboard"))
-        
 
-    db.session.add(existing)
+    db.session.add(application)
     db.session.commit()
     return redirect(url_for("student_dashboard"))
 
     
 @app.route("/student/student_applications")
 def my_applications():
-    student_id=session.get("user_id")
-    applications = Application.query.filter_by(student_id=student_id).all()
+    applications = Application.query.filter_by(student_id=1).all()
     return render_template(
         "student/student_application.html",
         applications=applications
@@ -276,4 +264,4 @@ def placement_drives():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("home"))
+    return redirect(url_for("login"))
